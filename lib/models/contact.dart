@@ -23,6 +23,8 @@ class Contact{
     this.locations = const [],
   });
 
+  
+
 }
 
 

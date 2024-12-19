@@ -2,12 +2,18 @@ import 'package:flutter/material.dart';
 import '../models/contact.dart';
 import 'editContactScreen.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+
+class _HomeScreenState extends State<HomeScreen>{
 
   final List<Contact> contacts = [
-    Contact(
-        name: 'Bernardo', email: 'bernardo@example.com', phone: '927252511'),
+    Contact(name: 'Bernardo', email: 'bernardo@example.com', phone: '927252511'),
     Contact(name: 'Ricardo', email: 'ricardo@example.com', phone: '962445987'),
     Contact(name: 'Xudas', email: 'xudasd@example.com', phone: '925969973'),
   ];
@@ -28,12 +34,18 @@ class HomeScreen extends StatelessWidget {
               title: Text(contact.name),
               subtitle: Text('${contact.email} \n${contact.phone}'),
               isThreeLine: true,
-              onTap: (){
-                Navigator.push(
+              onTap: () async{
+                final updateContact = await Navigator.push(
                   context,
-                  MaterialPageRoute(builder:(context) => EditContactScreen(contact:contact),
+                  MaterialPageRoute(
+                    builder:(context) => EditContactScreen(contact:contact),
                   ),
                 );
+                if(updateContact != null){
+                  setState(() {
+                    contacts[index] = updateContact;
+                  });
+                }
               },
             ),
           );
@@ -41,4 +53,9 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
+
+
+
 }
+

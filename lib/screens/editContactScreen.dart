@@ -30,18 +30,23 @@ class _EditContactScreenState extends State<EditContactScreen>{
   }
 
   @override
-  void dispose() {
-    nameController.dispose();
-    emailController.dispose();
-    phoneController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Contact'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.save),
+            onPressed: (){
+              final updateContact = Contact(
+                  name: nameController.text,
+                  email: emailController.text,
+                  phone: phoneController.text,
+              );
+              Navigator.pop(context, updateContact);
+            },
+          )
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -59,18 +64,6 @@ class _EditContactScreenState extends State<EditContactScreen>{
               controller: phoneController,
               decoration: const InputDecoration(labelText: 'Phone'),
               keyboardType: TextInputType.phone,
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  widget.contact.name = nameController.text;
-                  widget.contact.email = emailController.text;
-                  widget.contact.phone = phoneController.text;
-                });
-                Navigator.pop(context, widget.contact);
-              },
-              child: const Text('Save Changes'),
             ),
           ],
         ),
