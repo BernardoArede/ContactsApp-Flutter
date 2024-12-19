@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import '../models/contact.dart';
+import 'addContactScreen.dart';
 import 'editContactScreen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
 
+  const HomeScreen({super.key});
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
-
 
 class _HomeScreenState extends State<HomeScreen>{
 
@@ -23,6 +23,24 @@ class _HomeScreenState extends State<HomeScreen>{
     return Scaffold(
       appBar: AppBar(
         title: const Text('Contacts'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () async{
+              final newContact = await Navigator.push<Contact>(
+                  context, 
+                  MaterialPageRoute(
+                    builder: (context) => const addContactScreen(),
+              ),
+              );
+              if(newContact != null){
+                setState(() {
+                  contacts.add(newContact);
+                });
+              }
+            },
+          )
+        ],
       ),
       body: ListView.builder(
         itemCount: contacts.length,
