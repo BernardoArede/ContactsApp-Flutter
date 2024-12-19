@@ -13,7 +13,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen>{
 
   final List<Contact> contacts = [
-    Contact(name: 'Bernardo', email: 'bernardo@example.com', phone: '927252511'),
+    Contact(name: 'Bernardo', email: 'bernardo@example.com', phone: '927252511', birthdate: "2004-07-03"),
     Contact(name: 'Ricardo', email: 'ricardo@example.com', phone: '962445987'),
     Contact(name: 'Xudas', email: 'xudasd@example.com', phone: '925969973'),
   ];
@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen>{
                   context, 
                   MaterialPageRoute(
                     builder: (context) => const addContactScreen(),
-              ),
+                  ),
               );
               if(newContact != null){
                 setState(() {
@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen>{
             child: ListTile(
               leading: const Icon(Icons.person),
               title: Text(contact.name),
-              subtitle: Text('${contact.email} \n${contact.phone}'),
+              subtitle: Text('${contact.email} \n${contact.phone}${contact.birthdate !=null ? '\n${contact.birthdate}' : ''}'),
               isThreeLine: true,
               onTap: () async{
                 final updateContact = await Navigator.push(
