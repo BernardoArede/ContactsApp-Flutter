@@ -54,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen>{
               subtitle: Text('${contact.email} \n${contact.phone}${contact.birthdate !=null ? '\n${contact.birthdate}' : ''}'),
               isThreeLine: true,
               onTap: () async{
-                final updateContact = await Navigator.push(
+                final updateContact = await Navigator.push<Contact>(
                   context,
                   MaterialPageRoute(
                     builder:(context) => viewContactScreen(contact:contact),

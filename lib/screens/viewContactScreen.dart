@@ -19,7 +19,7 @@ class viewContactScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
 
-            /*TODO-> Temos que substituir isto pela foto do contacto se tiver se não colocar este icone*/
+            //TODO-> Temos que substituir isto pela foto do contacto se tiver se não colocar este icone
             CircleAvatar(
               radius: 50,
               child: Icon(Icons.person, size: 60, color: Colors.white),
@@ -50,13 +50,13 @@ class viewContactScreen extends StatelessWidget {
             const SizedBox(height: 8),
             _buildDetailRow(Icons.phone, 'Phone', contact.phone),
             if(contact.birthdate != null)
+              _buildDetailRow(Icons.cake, 'Birthdate', contact.birthdate!),
               const SizedBox(height: 8),
-            _buildDetailRow(Icons.cake, 'Birthdate', contact.birthdate!),
             const Spacer(),
             Center(
               child: ElevatedButton.icon(
                   onPressed: () async{
-                    final updateContact =  await Navigator.push(
+                    final updateContact =  await Navigator.push<Contact>(
                       context,
                       MaterialPageRoute(
                         builder: (context) => EditContactScreen(contact: contact),
@@ -64,6 +64,8 @@ class viewContactScreen extends StatelessWidget {
                   );
                     if(updateContact != null){
                       Navigator.pop(context, updateContact);
+                    }else{
+                      Navigator.pop(context);
                     }
                   },
                   icon: const Icon(Icons.edit),
