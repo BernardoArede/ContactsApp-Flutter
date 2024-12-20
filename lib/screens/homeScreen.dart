@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/screens/viewContactScreen.dart';
 import '../models/contact.dart';
 import 'addContactScreen.dart';
 import 'editContactScreen.dart';
@@ -56,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen>{
                 final updateContact = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder:(context) => EditContactScreen(contact:contact),
+                    builder:(context) => viewContactScreen(contact:contact),
                   ),
                 );
                 if(updateContact != null){
