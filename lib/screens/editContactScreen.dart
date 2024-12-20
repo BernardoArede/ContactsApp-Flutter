@@ -20,7 +20,6 @@ class _EditContactScreenState extends State<EditContactScreen>{
   late TextEditingController nameController;
   late TextEditingController emailController;
   late TextEditingController phoneController;
-  late TextEditingController dateController;
 
   @override
   void initState(){
@@ -28,7 +27,6 @@ class _EditContactScreenState extends State<EditContactScreen>{
     nameController = TextEditingController(text: widget.contact.name);
     emailController = TextEditingController(text: widget.contact.email);
     phoneController = TextEditingController(text: widget.contact.phone);
-    dateController = TextEditingController(text: widget.contact.birthdate);
   }
 
   @override
@@ -44,7 +42,6 @@ class _EditContactScreenState extends State<EditContactScreen>{
                   name: nameController.text,
                   email: emailController.text,
                   phone: phoneController.text,
-                  birthdate: dateController.text
               );
               Navigator.pop(context, updateContact);
             },
@@ -58,23 +55,16 @@ class _EditContactScreenState extends State<EditContactScreen>{
             TextField(
               controller: nameController,
               decoration: const InputDecoration(labelText: 'Name'),
-
             ),
             TextField(
               controller: emailController,
               decoration: const InputDecoration(labelText: 'Email'),
-              keyboardType: TextInputType.emailAddress,
             ),
             TextField(
               controller: phoneController,
               decoration: const InputDecoration(labelText: 'Phone'),
               keyboardType: TextInputType.phone,
             ),
-            TextField(
-              controller: dateController,
-              decoration: const InputDecoration(labelText: 'Birthdate'),
-              keyboardType: TextInputType.datetime,
-            )
           ],
         ),
       ),
