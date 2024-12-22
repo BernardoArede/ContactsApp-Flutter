@@ -42,19 +42,13 @@ class viewContactScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
-            Center(
-              child: Text(
-                contact.email,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey.shade600,
-                ),
-              ),
-            ),
             const SizedBox(height: 16),
             const Divider(thickness: 1),
             const SizedBox(height: 8),
             _buildDetailRow(Icons.phone, 'Phone', contact.phone),
+            const SizedBox(height: 16),
+            _buildDetailRow(Icons.email, 'Email', contact.email),
+            const SizedBox(height: 16),
             if(contact.birthdate != null)
               _buildDetailRow(Icons.cake, 'Birthdate', contact.birthdate!),
               const SizedBox(height: 8),
