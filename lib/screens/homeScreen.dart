@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_contacts/screens/viewContactScreen.dart';
 import '../models/contact.dart';
 import 'addContactScreen.dart';
-import 'editContactScreen.dart';
 
 class HomeScreen extends StatefulWidget {
 
