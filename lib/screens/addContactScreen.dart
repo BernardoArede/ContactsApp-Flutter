@@ -96,6 +96,7 @@ class _addContactScreen extends State<addContactScreen>{
               icon: const Icon(Icons.photo),
               label: const Text("Choose from gallery"),
             ),
+            const SizedBox(height: 8,),
             ElevatedButton.icon(
                 onPressed: () {
                   _pickImage(ImageSource.camera);
