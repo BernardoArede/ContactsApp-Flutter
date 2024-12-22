@@ -1,4 +1,6 @@
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/screens/editContactScreen.dart';
 import '../models/contact.dart';
@@ -6,6 +8,7 @@ import '../models/contact.dart';
 class viewContactScreen extends StatelessWidget {
   final Contact contact;
   const viewContactScreen({super.key, required this.contact});
+
 
   @override
   Widget build(BuildContext context){
@@ -18,11 +21,14 @@ class viewContactScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-
             //TODO-> Temos que substituir isto pela foto do contacto se tiver se não colocar este icone
             CircleAvatar(
-              radius: 50,
-              child: Icon(Icons.person, size: 60, color: Colors.white),
+              radius: 60,
+              backgroundImage: contact.imagePath != null
+              ? FileImage(File(contact.imagePath!)) : null,
+              child:
+                  contact.imagePath == null
+                      ? Icon(Icons.person, size: 60, color: Colors.white) : null,
               backgroundColor: Theme.of(context).primaryColor,
             ),
             const SizedBox(height: 16),

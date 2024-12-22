@@ -18,6 +18,7 @@ class _addContactScreen extends State<addContactScreen>{
   late TextEditingController newName;
   late TextEditingController newEmail;
   late TextEditingController newPhone;
+  DateTime? birthDate;
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
 
@@ -38,6 +39,20 @@ class _addContactScreen extends State<addContactScreen>{
     }
   }
 
+  Future<void> _selectBirthdate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+    if(pickedDate != null && pickedDate != birthDate){
+      setState(() {
+        birthDate = pickedDate;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,6 +66,7 @@ class _addContactScreen extends State<addContactScreen>{
                   name: newName.text,
                   email: newEmail.text,
                   phone: newPhone.text,
+                  birthdate: birthDate != null ? birthDate.toString().split(' ')[0] : null,
                   imagePath: _selectedImage?.path
               );
               Navigator.pop(context, newContact);
@@ -100,6 +116,31 @@ class _addContactScreen extends State<addContactScreen>{
               decoration: const InputDecoration(labelText: 'Phone'),
               keyboardType: TextInputType.phone,
             ),
+            const SizedBox(height: 16,),
+            ElevatedButton.icon(
+              onPressed: () {
+                _selectBirthdate(context);
+              },
+              icon: const Icon(Icons.cake),
+              label: const Text("Select Birthdate"),
+            ),
+            if (birthDate != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  "Birthdate: ${birthDate!.toLocal().toString().split(' ')[0]}",
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: const Text(
+                  "Birthdate: Not selected",
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              ),
+
           ],
         ),
       ),

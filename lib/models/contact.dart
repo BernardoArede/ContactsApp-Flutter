@@ -3,15 +3,10 @@ import "location.dart";
 
 class Contact{
   String name;
-
   String email;
-
   String phone;
-
   String? birthdate;
-
   String? imagePath;
-
   List<Location> locations;
 
   Contact({
