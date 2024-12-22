@@ -24,6 +24,7 @@ class _EditContactScreenState extends State<EditContactScreen>{
   late TextEditingController emailController;
   late TextEditingController phoneController;
   late TextEditingController birthdateController;
+  DateTime? birthDate;
   File? _selectedImage;
   final ImagePicker _picker = ImagePicker();
 
@@ -45,6 +46,20 @@ class _EditContactScreenState extends State<EditContactScreen>{
     }
   }
 
+  Future<void> _selectBirthdate(BuildContext context) async{
+    final DateTime? pickedDate = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(1900),
+        lastDate: DateTime.now()
+    );
+    if(pickedDate != null && pickedDate != birthDate){
+      setState(() {
+        birthDate = pickedDate;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -58,7 +73,7 @@ class _EditContactScreenState extends State<EditContactScreen>{
                   name: nameController.text,
                   email: emailController.text,
                   phone: phoneController.text,
-                  birthdate: birthdateController.text,
+                  birthdate: birthDate.toString().split(' ')[0],
                   imagePath: _selectedImage?.path
               );
               Navigator.pop(context, updateContact);
@@ -108,11 +123,30 @@ class _EditContactScreenState extends State<EditContactScreen>{
               decoration: const InputDecoration(labelText: 'Phone'),
               keyboardType: TextInputType.phone,
             ),
-            TextField(
-              controller: birthdateController,
-              decoration: const InputDecoration(labelText: 'Birthdate'),
-              keyboardType: TextInputType.datetime,
-            )
+            const SizedBox(height: 16),
+            ElevatedButton.icon(
+                onPressed: (){
+                  _selectBirthdate(context);
+                },
+                icon: const Icon(Icons.cake),
+              label: const Text('Select Birthdate'),
+            ),
+            if (birthDate != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  "Birthdate: ${birthDate!.toLocal().toString().split(' ')[0]}",
+                  style: const TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              )
+            else
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text(
+                  "Birthdate: No Selected",
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              )
           ],
         ),
       ),

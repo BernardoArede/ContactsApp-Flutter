@@ -66,7 +66,7 @@ class _addContactScreen extends State<addContactScreen>{
                   name: newName.text,
                   email: newEmail.text,
                   phone: newPhone.text,
-                  birthdate: birthDate != null ? birthDate.toString().split(' ')[0] : null,
+                  birthdate: birthDate.toString().split(' ')[0],
                   imagePath: _selectedImage?.path
               );
               Navigator.pop(context, newContact);
@@ -137,11 +137,10 @@ class _addContactScreen extends State<addContactScreen>{
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: const Text(
-                  "Birthdate: Not selected",
+                  "Birthdate: Not Selected",
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 ),
               ),
-
           ],
         ),
       ),
