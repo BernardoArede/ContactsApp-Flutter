@@ -3,18 +3,61 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/screens/editContactScreen.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../models/contact.dart';
 
-class viewContactScreen extends StatelessWidget {
+
+class viewContactScreen extends StatefulWidget {
   final Contact contact;
   const viewContactScreen({super.key, required this.contact});
 
-  static const initialCameraPosition = CameraPosition(
-    target: LatLng(37.7749, -122.4194),
-    zoom: 12,
-  );
+  @override
+  _viewContactScreenState createState() => _viewContactScreenState();
+}
 
+class _viewContactScreenState extends State<viewContactScreen> {
+  LatLng? _userLocation;
+  late GoogleMapController _mapController;
+
+  @override
+  void initState() {
+    super.initState();
+    _getUserLocation();
+  }
+
+  Future<void> _getUserLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Verifique se os serviços de localização estão habilitados
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Serviços de localização não estão habilitados
+      return;
+    }
+
+    // Verifique as permissões
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissões negadas
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissões permanentemente negadas
+      return;
+    }
+
+    // Obtenha a localização atual
+    Position position = await Geolocator.getCurrentPosition();
+    setState(() {
+      _userLocation = LatLng(position.latitude, position.longitude);
+    });
+  }
 
   @override
   Widget build(BuildContext context){
@@ -30,17 +73,17 @@ class viewContactScreen extends StatelessWidget {
             //TODO-> Temos que substituir isto pela foto do contacto se tiver se não colocar este icone
             CircleAvatar(
               radius: 60,
-              backgroundImage: contact.imagePath != null
-              ? FileImage(File(contact.imagePath!)) : null,
+              backgroundImage: widget.contact.imagePath != null
+              ? FileImage(File(widget.contact.imagePath!)) : null,
               child:
-                  contact.imagePath == null
+                  widget.contact.imagePath == null
                       ? Icon(Icons.person, size: 60, color: Colors.white) : null,
               backgroundColor: Theme.of(context).primaryColor,
             ),
             const SizedBox(height: 16),
             Center(
               child: Text(
-                contact.name,
+                widget.contact.name,
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
@@ -51,26 +94,29 @@ class viewContactScreen extends StatelessWidget {
             const SizedBox(height: 16),
             const Divider(thickness: 1),
             const SizedBox(height: 8),
-            _buildDetailRow(Icons.phone, 'Phone', contact.phone),
+            _buildDetailRow(Icons.phone, 'Phone', widget.contact.phone),
             const SizedBox(height: 16),
-            _buildDetailRow(Icons.email, 'Email', contact.email),
+            _buildDetailRow(Icons.email, 'Email', widget.contact.email),
             const SizedBox(height: 16),
-            if(contact.birthdate != null)
-              _buildDetailRow(Icons.cake, 'Birthdate', contact.birthdate!),
+            if(widget.contact.birthdate != null)
+              _buildDetailRow(Icons.cake, 'Birthdate', widget.contact.birthdate!),
               const SizedBox(height: 8),
-              SizedBox(
-              height: 200, // Defina a altura desejada para o mapa.
+            _userLocation == null
+                ? const Center(child: CircularProgressIndicator())
+                : SizedBox(
+              height: 200,
               child: GoogleMap(
-              initialCameraPosition: initialCameraPosition,
-              mapType: MapType.normal,
-              myLocationEnabled: true,
-              myLocationButtonEnabled: true,
-              zoomControlsEnabled: false,
-              onMapCreated: (GoogleMapController controller) {
-              // Salve ou use o controlador, se necessário.
-              },
+                initialCameraPosition: CameraPosition(
+                  target: _userLocation!,
+                  zoom: 12,
+                ),
+                myLocationEnabled: true,
+                myLocationButtonEnabled: true,
+                onMapCreated: (GoogleMapController controller) {
+                  _mapController = controller;
+                },
               ),
-              ),
+            ),
             const Spacer(),
             Center(
               child: ElevatedButton.icon(
@@ -78,7 +124,7 @@ class viewContactScreen extends StatelessWidget {
                     final updateContact =  await Navigator.push<Contact>(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => EditContactScreen(contact: contact),
+                        builder: (context) => EditContactScreen(contact: widget.contact),
                       ),
                   );
                     if(updateContact != null){
