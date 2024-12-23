@@ -18,7 +18,17 @@ class Contact{
     this.locations = const [],
   });
 
-  
+  factory Contact.fromJson(Map<String, dynamic> json) {
+    return Contact(
+      name: json['name'],
+      email: json['email'],
+      phone: json['phone'],
+      birthdate: json['birthdate'],
+      imagePath: json['imagePath'],
+      locations: json['locations']
+    );
+  }
+
 
 }
 

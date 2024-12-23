@@ -3,6 +3,7 @@ import 'package:flutter_contacts/screens/viewContactScreen.dart';
 import '../models/contact.dart';
 import 'addContactScreen.dart';
 import 'editContactScreen.dart';
+import 'listContactSreen.dart';
 import 'removeContactScreen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -59,6 +60,17 @@ class _HomeScreenState extends State<HomeScreen> {
               if (removedContact != null) {
                 _removeContact(removedContact);
               }
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.list),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ListContactScreen(contacts: contacts),
+                ),
+              );
             },
           ),
         ],
