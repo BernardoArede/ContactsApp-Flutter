@@ -104,6 +104,8 @@ class _viewContactScreenState extends State<viewContactScreen> {
             if (widget.contact.birthdate != null)
               _buildDetailRow(Icons.cake, 'Birthdate', widget.contact.birthdate!),
             const SizedBox(height: 8),
+            const Divider(thickness: 1),
+            const SizedBox(height: 8),
             SizedBox(
               height: 250, // Defina a altura desejada para o mapa.
               child: Stack(
