@@ -11,7 +11,6 @@ class EditContactScreen extends StatefulWidget{
 
   final Contact contact;
 
-
   const EditContactScreen({super.key, required this.contact});
 
   @override
@@ -45,20 +44,6 @@ class _EditContactScreenState extends State<EditContactScreen>{
       });
     }
   }
-
-  /*Future<void> _selectBirthdate(BuildContext context) async{
-    final DateTime? pickedDate = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1900),
-        lastDate: DateTime.now()
-    );
-    if(pickedDate != null && pickedDate != birthDate){
-      setState(() {
-        birthDate = pickedDate;
-      });
-    }
-  }*/
 
   @override
   Widget build(BuildContext context){
@@ -143,30 +128,6 @@ class _EditContactScreenState extends State<EditContactScreen>{
                 }
               },
             ),
-            /*const SizedBox(height: 16),
-            ElevatedButton.icon(
-                onPressed: (){
-                  _selectBirthdate(context);
-                },
-                icon: const Icon(Icons.cake),
-              label: const Text('Select Birthdate'),
-            ),
-            if (birthDate != null)
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  "Birthdate: ${birthDate!.toLocal().toString().split(' ')[0]}",
-                  style: const TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-              )
-            else
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: Text(
-                  "Birthdate: No Selected",
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                ),
-              )*/
           ],
         ),
       ),
