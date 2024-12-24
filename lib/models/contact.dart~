@@ -27,14 +27,7 @@ class Contact{
       phone: json['phone'],
       birthdate: json['birthdate'],
       imagePath: json['imagePath'],
-      // Aqui você precisa converter para um Set<Marker>, se necessário.
-      locations: (json['locations'] as List<dynamic>?)?.map((location) {
-        // Substitua pela lógica de criação de um Marker, se necessário.
-        return Marker(
-          markerId: MarkerId(location['id']),
-          position: LatLng(location['lat'], location['lng']),
-        );
-      }).toSet(),
+      locations: json['locations']
     );
   }
 

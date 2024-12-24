@@ -221,7 +221,7 @@ class _viewContactScreenState extends State<viewContactScreen> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           },
-                          child: const Text("Close"),
+                          child: const Text("close"),
                         ),
                       ],
                     );
