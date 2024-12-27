@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../models/contact.dart';
 import 'package:intl/intl.dart';
+
 class viewContactScreen extends StatefulWidget {
   final Contact contact;
 
@@ -72,7 +73,6 @@ class _viewContactScreenState extends State<viewContactScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            //TODO-> Temos que substituir isto pela foto do contacto se tiver se não colocar este icone
             CircleAvatar(
               radius: 60,
               backgroundImage: widget.contact.imagePath != null

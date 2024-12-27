@@ -54,6 +54,14 @@ class _EditContactScreenState extends State<EditContactScreen>{
           IconButton(
             icon: const Icon(Icons.save),
             onPressed: (){
+              if(nameController.text.isEmpty||
+                emailController.text.isEmpty ||
+                phoneController.text.isEmpty){
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Please fill all required fields.")),
+                );
+                return;
+              }
               final updateContact = Contact(
                   name: nameController.text,
                   email: emailController.text,

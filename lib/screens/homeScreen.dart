@@ -14,7 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final List<Contact> contacts = [
-    Contact(name: 'Bernardo', email: 'bernardo@example.com', phone: '927252511', birthdate: "2004-07-03"),
+    Contact(name: 'Bernardo', email: 'bernardo@example.com', phone: '927252511' , birthdate: "2004-07-03"),
     Contact(name: 'Ricardo', email: 'ricardo@example.com', phone: '962445987'),
     Contact(name: 'Xudas', email: 'xudasd@example.com', phone: '925969973'),
   ];
@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.person),
               title: Text(contact.name),
               subtitle: Text(
-                '${contact.email} \n${contact.phone}${contact.birthdate != null ? '\n${contact.birthdate}' : ''}',
+                '${contact.email} \n${contact.phone}\n${contact.birthdate != null ? contact.birthdate : " "}',
               ),
               isThreeLine: true,
               onTap: () async {
