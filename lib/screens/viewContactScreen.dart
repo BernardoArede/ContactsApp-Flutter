@@ -74,7 +74,7 @@ class _viewContactScreenState extends State<viewContactScreen> {
         if (orientation == Orientation.landscape) {
           return Row(
             children: [
-              // Lado esquerdo: Detalhes do contato
+              // Lado esquerdo
               Expanded(
                 flex: 1,
                 child: Padding(
@@ -140,13 +140,12 @@ class _viewContactScreenState extends State<viewContactScreen> {
                   ),
                 ),
               ),
-              // Divisória
               Container(
                 width: 1,
                 color: Colors.grey,
                 margin: const EdgeInsets.symmetric(vertical: 16.0),
               ),
-              // Lado direito: Mapa e botões
+              // Lado direito
               Expanded(
                 flex: 2,
                 child: Padding(
