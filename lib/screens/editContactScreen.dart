@@ -74,71 +74,161 @@ class _EditContactScreenState extends State<EditContactScreen>{
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            if(_selectedImage != null)
-              CircleAvatar(
-                radius: 60,
-                backgroundImage: FileImage(_selectedImage!),
-              )
-            else
-              const CircleAvatar(
-                radius: 60,
-                child: Icon(Icons.person, size: 60),
-              ),
-            const SizedBox(height: 16,),
-            ElevatedButton.icon(
-              onPressed: () {
-                _pickImage(ImageSource.gallery);
-              },
-              icon: const Icon(Icons.photo),
-              label: const Text("Choose from gallery"),
-            ),
-            ElevatedButton.icon(
-              onPressed: () {
-                _pickImage(ImageSource.camera);
-              },
-              icon: const Icon(Icons.camera),
-              label: const Text("Take a photo"),
-            ),
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(labelText: 'Name'),
-            ),
-            TextField(
-              controller: emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: phoneController,
-              decoration: const InputDecoration(labelText: 'Phone'),
-              keyboardType: TextInputType.phone,
-            ),
-            TextField(
-              controller: birthdateController,
-              readOnly: true, // Define o campo como somente leitura para evitar digitação manual
-              decoration: const InputDecoration(labelText: 'Birthdate'),
-              onTap: () async {
-                DateTime? selectedDate = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(), // Data inicial exibida
-                  firstDate: DateTime(1900),   // Data mínima permitida
-                  lastDate: DateTime.now(),    // Data máxima permitida
-                );
+      body: OrientationBuilder(builder: (context,orientation){
+        if(orientation == Orientation.landscape){
 
-                if (selectedDate != null) {
-                  setState(() {
-                    birthdateController.text =
-                    '${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}';
-                  });
-                }
-              },
+          return Row(
+            children: [
+              // Parte esquerda: Foto e botões
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (_selectedImage != null)
+                      CircleAvatar(
+                        radius: 60,
+                        backgroundImage: FileImage(_selectedImage!),
+                      )
+                    else
+                      const CircleAvatar(
+                        radius: 60,
+                        child: Icon(Icons.person, size: 60),
+                      ),
+                    const SizedBox(height: 16),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        _pickImage(ImageSource.gallery);
+                      },
+                      icon: const Icon(Icons.photo),
+                      label: const Text("Choose from gallery"),
+                    ),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        _pickImage(ImageSource.camera);
+                      },
+                      icon: const Icon(Icons.camera),
+                      label: const Text("Take a photo"),
+                    ),
+                  ],
+                ),
+              ),
+              // Parte direita: Campos de edição
+              Expanded(
+                flex: 2,
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextField(
+                        controller: nameController,
+                        decoration: const InputDecoration(labelText: 'Name'),
+                      ),
+                      TextField(
+                        controller: emailController,
+                        decoration: const InputDecoration(labelText: 'Email'),
+                      ),
+                      TextField(
+                        controller: phoneController,
+                        decoration: const InputDecoration(labelText: 'Phone'),
+                        keyboardType: TextInputType.phone,
+                      ),
+                      TextField(
+                        controller: birthdateController,
+                        readOnly: true,
+                        decoration: const InputDecoration(labelText: 'Birthdate'),
+                        onTap: () async {
+                          DateTime? selectedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime.now(),
+                          );
+
+                          if (selectedDate != null) {
+                            setState(() {
+                              birthdateController.text =
+                              '${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}';
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          );
+
+        }else{
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                if(_selectedImage != null)
+                  CircleAvatar(
+                    radius: 60,
+                    backgroundImage: FileImage(_selectedImage!),
+                  )
+                else
+                  const CircleAvatar(
+                    radius: 60,
+                    child: Icon(Icons.person, size: 60),
+                  ),
+                const SizedBox(height: 16,),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    _pickImage(ImageSource.gallery);
+                  },
+                  icon: const Icon(Icons.photo),
+                  label: const Text("Choose from gallery"),
+                ),
+                ElevatedButton.icon(
+                  onPressed: () {
+                    _pickImage(ImageSource.camera);
+                  },
+                  icon: const Icon(Icons.camera),
+                  label: const Text("Take a photo"),
+                ),
+                TextField(
+                  controller: nameController,
+                  decoration: const InputDecoration(labelText: 'Name'),
+                ),
+                TextField(
+                  controller: emailController,
+                  decoration: const InputDecoration(labelText: 'Email'),
+                ),
+                TextField(
+                  controller: phoneController,
+                  decoration: const InputDecoration(labelText: 'Phone'),
+                  keyboardType: TextInputType.phone,
+                ),
+                TextField(
+                  controller: birthdateController,
+                  readOnly: true, // Define o campo como somente leitura para evitar digitação manual
+                  decoration: const InputDecoration(labelText: 'Birthdate'),
+                  onTap: () async {
+                    DateTime? selectedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(), // Data inicial exibida
+                      firstDate: DateTime(1900),   // Data mínima permitida
+                      lastDate: DateTime.now(),    // Data máxima permitida
+                    );
+
+                    if (selectedDate != null) {
+                      setState(() {
+                        birthdateController.text =
+                        '${selectedDate.year}-${selectedDate.month.toString().padLeft(2, '0')}-${selectedDate.day.toString().padLeft(2, '0')}';
+                      });
+                    }
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          );
+        }
+      })
     );
   }
 }
