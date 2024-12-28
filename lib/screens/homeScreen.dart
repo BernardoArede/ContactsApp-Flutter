@@ -90,7 +90,8 @@ class _HomeScreenState extends State<HomeScreen> {
               leading: const Icon(Icons.person),
               title: Text(contact.name),
               subtitle: Text(
-                '${contact.email} \n${contact.phone}\n${contact.birthdate != null ? contact.birthdate : " "}',
+                '${contact.email} \n${contact.phone}\n'
+                    '${contact.birthdate ?? " "}', // igual a: ${contact.birthdate != null ? contact.birthdate : " "}
               ),
               isThreeLine: true,
               onTap: () async {
