@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_contacts/models/contactStorage.dart';
 import 'package:flutter_contacts/screens/viewContactScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../models/contact.dart';
 import 'addContactScreen.dart';
 import 'listContactSreen.dart';
@@ -13,16 +15,32 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Contact> contacts = [
-    Contact(name: 'Bernardo', email: 'bernardo@example.com', phone: '927252511' , birthdate: "2004-07-03"),
-    Contact(name: 'Ricardo', email: 'ricardo@example.com', phone: '962445987'),
-    Contact(name: 'Xudas', email: 'xudasd@example.com', phone: '925969973'),
-  ];
 
-  void _removeContact(Contact contact) {
+  ContactStorage contactStorage = ContactStorage();
+  List<Map<String, dynamic>> contacts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeContacts();
+  }
+  Future<void> clearSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    print("SharedPreferences limpas com sucesso!");
+  }
+
+  Future<void> _initializeContacts() async {
+    await contactStorage.loadContacts();
     setState(() {
-      contacts.remove(contact);
+      contacts = contactStorage.contacts;
     });
+  }
+
+  Future<void> _saveContacts() async {
+    for (var contact in contacts) {
+      await contactStorage.saveContact(contact);
+    }
   }
 
   @override
@@ -34,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: () async {
-              final newContact = await Navigator.push<Contact>(
+              final newContact = await Navigator.push<Map<String, dynamic>>(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const addContactScreen(),
@@ -44,24 +62,28 @@ class _HomeScreenState extends State<HomeScreen> {
                 setState(() {
                   contacts.add(newContact);
                 });
+                await _saveContacts();
               }
             },
           ),
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () async {
-              final removedContact = await Navigator.push<Contact>(
+              final removedContact = await Navigator.push<Map<String, dynamic>>(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RemoveContactScreen(contacts: List.from(contacts)),
+                  builder: (context) => RemoveContactScreen(contacts: contacts),
                 ),
               );
               if (removedContact != null) {
-                _removeContact(removedContact);
+                setState(() {
+                  contacts.remove(removedContact);
+                });
+                await _saveContacts();
               }
             },
           ),
-          IconButton(
+         /* IconButton(
             icon: const Icon(Icons.list),
             onPressed: () {
               Navigator.push(
@@ -71,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               );
             },
-          ),
+          ),*/
         ],
       ),
       body: contacts.isEmpty
@@ -88,14 +110,14 @@ class _HomeScreenState extends State<HomeScreen> {
           return Card(
             child: ListTile(
               leading: const Icon(Icons.person),
-              title: Text(contact.name),
+              title: Text(contact['name']),
               subtitle: Text(
-                '${contact.email} \n${contact.phone}\n'
-                    '${contact.birthdate ?? " "}', // igual a: ${contact.birthdate != null ? contact.birthdate : " "}
+                '${contact['email']} \n${contact['phone']}\n'
+                    '${contact['birthdate'] ?? " "}', // igual a: ${contact.birthdate != null ? contact.birthdate : " "}
               ),
               isThreeLine: true,
               onTap: () async {
-                final updateContact = await Navigator.push<Contact>(
+                /* updateContact = await Navigator.push<Contact>(
                   context,
                   MaterialPageRoute(
                     builder: (context) => viewContactScreen(contact: contact),
@@ -105,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   setState(() {
                     contacts[index] = updateContact;
                   });
-                }
+                }*/
               },
             ),
           );
