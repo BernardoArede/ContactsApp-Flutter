@@ -70,7 +70,7 @@ class _addContactScreen extends State<addContactScreen> {
                   name: newName.text,
                   email: newEmail.text,
                   phone: newPhone.text,
-                  birthdate: birthDate.toString().split(' ')[0],
+                  birthdate: birthDate?.toString().split(' ')[0],
                   imagePath: _selectedImage?.path
               );
               Navigator.pop(context, newContact);

@@ -78,7 +78,6 @@
                 );
                 if (removedContact != null) {
                   _removeContact(removedContact);
-
                 }
               },
             ),
@@ -112,7 +111,7 @@
                 title: Text(contact.name),
                 subtitle: Text(
                   '${contact.email} \n${contact.phone}\n'
-                      '${contact.birthdate ?? " "}', // igual a: ${contact.birthdate != null ? contact.birthdate : " "}
+                      '${contact.birthdate ?? ""}', // igual a: ${contact.birthdate != null ? contact.birthdate : " "}
                 ),
                 isThreeLine: true,
                 onTap: () async {

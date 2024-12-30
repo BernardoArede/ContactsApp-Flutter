@@ -66,7 +66,7 @@ class _EditContactScreenState extends State<EditContactScreen>{
                   name: nameController.text,
                   email: emailController.text,
                   phone: phoneController.text,
-                  birthdate: birthdateController.text,
+                  birthdate: birthdateController?.text,
                   imagePath: _selectedImage?.path
               );
               Navigator.pop(context, updateContact);
