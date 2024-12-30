@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/models/contact.dart';
+import 'package:flutter_contacts/models/contactStorage.dart';
 import 'package:image_picker/image_picker.dart';
 
 class addContactScreen extends StatefulWidget{
@@ -15,6 +16,9 @@ class addContactScreen extends StatefulWidget{
 }
 
 class _addContactScreen extends State<addContactScreen> {
+
+  ContactStorage contactStorage = ContactStorage();
+
   late TextEditingController newName;
   late TextEditingController newEmail;
   late TextEditingController newPhone;
@@ -62,13 +66,14 @@ class _addContactScreen extends State<addContactScreen> {
           IconButton(
             icon: Icon(Icons.save),
             onPressed: () {
-              final newContact = Contact(
-                  name: newName.text,
-                  email: newEmail.text,
-                  phone: newPhone.text,
-                  birthdate: birthDate.toString().split(' ')[0],
-                  imagePath: _selectedImage?.path
-              );
+              final newContact =
+                {
+                  'name' : newName.text,
+                  'email' : newEmail.text,
+                  'phone' : newPhone.text,
+                  'birthdate' : birthDate?.toString().split(' ')[0],
+                  'imagePath': _selectedImage?.path
+                };
               Navigator.pop(context, newContact);
             },
           )

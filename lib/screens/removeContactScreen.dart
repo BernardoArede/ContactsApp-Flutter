@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/models/contact.dart';
 
+import '../models/contactStorage.dart';
+
 class RemoveContactScreen extends StatefulWidget {
-  final List<Contact> contacts;
+  final List<Map<String, dynamic>> contacts;
 
   const RemoveContactScreen({Key? key, required this.contacts}) : super(key: key);
 
@@ -13,10 +15,13 @@ class RemoveContactScreen extends StatefulWidget {
 }
 
 class _RemoveContactScreenState extends State<RemoveContactScreen> {
-  void _removeContact(Contact contact) {
+  void _removeContact(Map<String, dynamic> contact) async {
     setState(() {
       widget.contacts.remove(contact);
     });
+
+    final contactStorage = ContactStorage();
+    await contactStorage.saveAllContacts(widget.contacts);
     Navigator.pop(context, contact);
   }
 
@@ -38,18 +43,18 @@ class _RemoveContactScreenState extends State<RemoveContactScreen> {
         itemBuilder: (context, index) {
           final contact = widget.contacts[index];
           return ListTile(
-            leading: contact.imagePath != null
+            leading: contact['imagePath'] != null
                 ? CircleAvatar(
-              backgroundImage: FileImage(File(contact.imagePath!)),
+              backgroundImage: FileImage(File(contact['imagePath']!)),
             )
                 : const CircleAvatar(
               child: Icon(Icons.person),
             ),
             title: Text(
-                contact.name ?? "Unnamed"
+                contact['name'] ?? "Unnamed"
             ),
             subtitle: Text(
-                contact.email ?? "No email"
+                contact['email'] ?? "No email"
             ),
             trailing: IconButton(
               icon: const Icon(
