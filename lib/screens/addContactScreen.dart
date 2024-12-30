@@ -66,14 +66,13 @@ class _addContactScreen extends State<addContactScreen> {
           IconButton(
             icon: Icon(Icons.save),
             onPressed: () {
-              final newContact =
-                {
-                  'name' : newName.text,
-                  'email' : newEmail.text,
-                  'phone' : newPhone.text,
-                  'birthdate' : birthDate?.toString().split(' ')[0],
-                  'imagePath': _selectedImage?.path
-                };
+              final newContact = Contact(
+                  name: newName.text,
+                  email: newEmail.text,
+                  phone: newPhone.text,
+                  birthdate: birthDate.toString().split(' ')[0],
+                  imagePath: _selectedImage?.path
+              );
               Navigator.pop(context, newContact);
             },
           )
