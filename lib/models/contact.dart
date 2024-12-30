@@ -20,6 +20,17 @@ class Contact{
     Set<Marker>? locations,
   }) : locations = locations ?? <Marker>{};
 
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'email': email,
+      'phone': phone,
+      'birthdate': birthdate,
+      'imagePath': imagePath,
+      'locations': locations.map((location) => location.toJson()).toList(),
+    };
+  }
+
   factory Contact.fromJson(Map<String, dynamic> json) {
     return Contact(
       name: json['name'],
