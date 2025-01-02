@@ -1,4 +1,5 @@
 
+import "package:flutter/cupertino.dart";
 import "package:geolocator/geolocator.dart";
 import "package:google_maps_flutter/google_maps_flutter.dart";
 
@@ -27,7 +28,12 @@ class Contact{
       'phone': phone,
       'birthdate': birthdate,
       'imagePath': imagePath,
-      'locations': locations.map((location) => location.toJson()).toList(),
+      'locations': locations.map((location) => {
+        'id': location.markerId.value,
+        'lat': location.position.latitude,
+        'lng': location.position.longitude,
+        'title': location.infoWindow.title,
+      }).toList(),
     };
   }
 
@@ -38,18 +44,21 @@ class Contact{
       phone: json['phone'],
       birthdate: json['birthdate'],
       imagePath: json['imagePath'],
-      // Aqui você precisa converter para um Set<Marker>, se necessário.
       locations: (json['locations'] as List<dynamic>?)?.map((location) {
-        // Substitua pela lógica de criação de um Marker, se necessário.
         return Marker(
-          markerId: MarkerId(location['id']),
-          position: LatLng(location['lat'], location['lng']),
+          markerId: MarkerId(location['id'] as String),
+          position: LatLng(location['lat'] as double, location['lng'] as double),
+          infoWindow: InfoWindow(
+            title: location['title'] as String?,
+            snippet: "Lat: ${location['lat']}, Lng: ${location['lng']}",
+          ),
         );
-      }).toSet(),
+      }).toSet() ?? {},
     );
   }
 
-  void addLocation(Marker location) => locations.add(location);
+
+
 
   void removeLocation(Marker targetMarker) {
     const double maxDistanceInMeters = 2000; // 2 km em metros

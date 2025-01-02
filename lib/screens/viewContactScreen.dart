@@ -7,6 +7,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../models/contact.dart';
 import 'package:intl/intl.dart';
 
+import '../models/contactStorage.dart';
+
 class viewContactScreen extends StatefulWidget {
   final Contact contact;
 
@@ -20,15 +22,15 @@ class _viewContactScreenState extends State<viewContactScreen> {
   late LatLng initialCameraPosition;
   late GoogleMapController mapController;
   late Set<Marker> locations;
+  ContactStorage contactStorage = ContactStorage();
 
   @override
   void initState() {
     super.initState();
-    // Inicializa o mapa na posição inicial.
     initialCameraPosition =
     const LatLng(37.7749, -122.4194); // Exemplo: São Francisco.
     locations =
-        widget.contact.locations; // Inicializa com os marcadores do contato.
+        widget.contact.locations;
   }
 
   Future<Position> getCurrentLocation() async {
@@ -201,7 +203,9 @@ class _viewContactScreenState extends State<viewContactScreen> {
 
                               setState(() {
                                 widget.contact.locations.add(newMarker);
+                               // widget.contact.addLocation(LatLng(position.latitude, position.longitude));
                               });
+                              await contactStorage.updateContact(widget.contact);
                             },
                             icon: const Icon(Icons.add_location_alt),
                             label: const Text("Add Marker"),
@@ -241,8 +245,8 @@ class _viewContactScreenState extends State<viewContactScreen> {
                                         child: ListTile(
                                           leading: const Icon(
                                               Icons.location_on),
-                                          title: Text(marker.infoWindow.title ??
-                                              "No Title"),
+                                          title: Text(marker.infoWindow.title??
+                                              "Unknown Date/Time"),
                                           subtitle: Text(
                                             marker.infoWindow.snippet ??
                                                 "Lat: ${marker.position
@@ -375,16 +379,16 @@ class _viewContactScreenState extends State<viewContactScreen> {
                         Position position = await getCurrentLocation();
                         final newMarker = Marker(
                           markerId: MarkerId(DateTime.now().toString()),
-                          position: LatLng(
-                              position.latitude, position.longitude),
+                          position: LatLng(position.latitude, position.longitude),
                           infoWindow: InfoWindow(
-                              title: DateFormat('dd/MM/yyyy HH:mm').format(
-                                  DateTime.now())),
+                            title: DateFormat('dd/MM/yyyy HH:mm').format(DateTime.now()),  // Configurando o título com data/hora
+                          ),
                         );
 
                         setState(() {
                           widget.contact.locations.add(newMarker);
                         });
+                        await contactStorage.updateContact(widget.contact);
                       },
                       icon: const Icon(Icons.add_location_alt),
                       label: const Text("Add Marker"),
@@ -397,6 +401,7 @@ class _viewContactScreenState extends State<viewContactScreen> {
                           marker.position.latitude == position.latitude &&
                               marker.position.longitude == position.longitude);
                         });
+                        await contactStorage.updateContact(widget.contact);
                       },
                       icon: const Icon(Icons.wrong_location),
                       label: const Text("Remove Marker"),

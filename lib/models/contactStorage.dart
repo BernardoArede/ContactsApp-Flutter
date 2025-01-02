@@ -37,4 +37,12 @@ class ContactStorage {
     final List<dynamic> jsonData = jsonDecode(content);
     return jsonData.map((data) => Contact.fromJson(data)).toList();
   }
+
+ Future<void> updateContact(Contact updatedContact) async {
+   final contacts = await loadContacts();
+   final updatedContacts = contacts.map((contact) {
+     return contact.name == updatedContact.name ? updatedContact : contact;
+   }).toList();
+   await saveContacts(updatedContacts);
+ }
 }
